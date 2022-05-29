@@ -1,0 +1,12 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "postinstall": "lerna bootstrap",
+    "start": "lerna run start",
+    "start:dev": "lerna run start:dev"
+  },
+  "devDependencies": {
+    "lerna": "^5.0.0"
+  }
+}
