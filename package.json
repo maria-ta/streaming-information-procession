@@ -3,10 +3,18 @@
   "private": true,
   "scripts": {
     "postinstall": "lerna bootstrap",
-    "start": "lerna run start",
-    "start:dev": "lerna run start:dev"
+    "start": "concurrently \"npm run start:consumer\" \"npm run start:producer\"",
+    "start:consumer": "cd packages/consumer && npm run start",
+    "start:producer": "cd packages/producer && npm run start",
+    "start:dev": "npm run start:consumer:dev && npm run start:producer:dev",
+    "start:consumer:dev": "cd packages/consumer && npm run start:dev",
+    "start:producer:dev": "cd packages/producer && npm run start:dev"
   },
   "devDependencies": {
+    "concurrently": "^7.2.1",
+    "eslint": "^8.16.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "lerna": "^5.0.0"
   }
 }
