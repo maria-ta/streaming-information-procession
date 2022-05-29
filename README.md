@@ -24,6 +24,10 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+After application start, open
+* http://localhost:3000/index.html to see UI
+* http://localhost:8080 to see Kafka UI
+
 ## Test
 
 ```bash
