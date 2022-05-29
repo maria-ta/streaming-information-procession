@@ -1,6 +1,6 @@
 ## Description
 
-Streaming information procession homework.
+Streaming information procession homework (producer app).
 
 ## Installation
 
@@ -16,8 +16,27 @@ $ npm install
 ```bash
 # development
 $ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
 After application start, open
 * http://localhost:3000/index.html to see UI
 * http://localhost:8080 to see Kafka UI
+
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
