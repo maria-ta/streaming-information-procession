@@ -10,12 +10,27 @@ export class AnalyticsController {
   ) {}
 
   @MessagePattern('analytics')
-  readMessage(@Payload() message: any, @Ctx() context: KafkaContext) {
+  readAllMessages(@Payload() message: any, @Ctx() context: KafkaContext) {
     const originalMessage = context.getMessage();
+    const event = originalMessage.value as any;
     const response =
-        `Receiving a new message from topic: analytics: ` +
-        JSON.stringify(originalMessage.value);
+        `New event: ${event.type} on ${event.targetId}`;
     console.log(response);
+    console.log('-------------------------------');
+    return response;
+  }
+
+  @MessagePattern('analytics')
+  readTenRandomMessages(@Payload() message: any, @Ctx() context: KafkaContext) {
+    const originalMessage = context.getMessage();
+    const event = originalMessage.value as any;
+    const tenRandomEvents = this.analyticsService.getTenRandomEvents(event);
+    const response =
+        `10 random messages: ` + tenRandomEvents.map((event) => {
+          return `        ${event.type} on ${event.targetId}, ${new Date(event.timestamp)}`;
+        }).join(';\n');
+    console.log(response);
+    console.log('-------------------------------');
     return response;
   }
 }
