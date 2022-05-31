@@ -12,9 +12,14 @@ export class AnalyticsController {
   @MessagePattern('analytics')
   readAllMessages(@Payload() message: any, @Ctx() context: KafkaContext) {
     const originalMessage = context.getMessage();
-    const event = originalMessage.value as any;
-    const response =
-        `New event: ${event.type} on ${event.targetId}`;
+    const event = this.analyticsService.getEachTenthEvent(originalMessage.value as any);
+    let response: string;
+    if (event) {
+      response =
+          `New event: ${event.type} on ${event.targetId}`;
+    } else {
+      response = '-'
+    }
     console.log(response);
     console.log('-------------------------------');
     return response;
