@@ -11,7 +11,7 @@ import {interval, map, Observable, Subject, takeUntil, tap} from "rxjs";
 
 type ZeroOne = 0 | 1;
 
-const THREAD_NUMBER = 100;
+const THREAD_NUMBER = 9;
 const C = 0.000001;
 
 @WebSocketGateway({
@@ -20,16 +20,15 @@ const C = 0.000001;
   },
 })
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  private clientId: string;
-
   private threads: Observable<ZeroOne>[] = [];
   private t: number[] = [];
   private sum: number[] = [];
 
-  private disconnect$: Subject<void> = new Subject();
-
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('AppGateway');
+
+  private disconnect$: Subject<void> = new Subject();
+
 
   afterInit(server: Server) {
     this.logger.log('Init');
@@ -52,9 +51,6 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     this.disconnect$.complete();
   }
 
-  private sendThreadNumber() {
-    this.server.emit('threadNumber', THREAD_NUMBER);
-  }
 
   private createThreads(n: number) {
     this.threads = [];
@@ -94,20 +90,10 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         );
   }
 
-  private findMaxElem(arr: number[]): {i: number, value: number} {
-    let iMax: number | undefined;
 
-    for (let i = 0; i < arr.length; i++ ) {
-      if (arr[iMax] < arr[i] || typeof iMax === 'undefined') {
-        iMax = i;
-      }
+  private sendThreadNumber() {
+        this.server.emit('threadNumber', THREAD_NUMBER);
     }
-
-    return {
-      i: iMax,
-      value: arr[iMax]
-    };
-  }
 
   private sendThreadValue(threadIndex: number, value: ZeroOne): void {
     this.server.emit('threadValue', { i: threadIndex, value });
@@ -121,6 +107,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     this.server.emit('maxSum', { i: threadIndex, value });
   }
 
+
   private getRandomNumber(from: number, to: number): number {
     return Math.random() * (to - from) + to;
   }
@@ -128,4 +115,19 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   private getZeroOrOne(): ZeroOne {
     return Math.random() > 0.5 ? 1 : 0;
   }
+
+  private findMaxElem(arr: number[]): {i: number, value: number} {
+        let iMax: number | undefined;
+
+        for (let i = 0; i < arr.length; i++ ) {
+            if (arr[iMax] < arr[i] || typeof iMax === 'undefined') {
+                iMax = i;
+            }
+        }
+
+        return {
+            i: iMax,
+            value: arr[iMax]
+        };
+    }
 }

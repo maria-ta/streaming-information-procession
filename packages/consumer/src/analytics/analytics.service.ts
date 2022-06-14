@@ -10,7 +10,9 @@ export class AnalyticsService {
     private currentClickEventIndex = 0;
 
     getEachTenthEvent(event: AnalyticsEventDto): AnalyticsEventDto | null {
+        console.log(event.type);
         if (event.type === 'click') {
+            console.log(this.currentClickEventIndex);
             this.currentClickEventIndex++;
             return this.currentClickEventIndex % 10 === 0 ? event : null;
         } else {
